@@ -1,0 +1,63 @@
+{% load display_tags %}
+{% load i18n %}
+{% load image_tags %}
+{% load reviews_tags %} {# <-- ESTA ES LA LÍNEA QUE SOLUCIONA EL ERROR #}
+
+{# Agregamos un ID único a cada tarjeta para poder controlarla de forma individual #}
+<article class="product_pod" id="product-pod-{{ product.id }}">
+    
+    {# --- Si el producto es padre, ocultamos su precio con CSS específico --- #}
+    {% if product.is_parent %}
+        <style>
+            #product-pod-{{ product.id }} .price_color {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        </style>
+    {% endif %}
+
+    {% block product_image %}
+        <div class="image_container">
+            {% with image=product.primary_image %}
+                {% oscar_thumbnail image.original "150x150" upscale=False as thumb %}
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive">
+                </a>
+            {% endwith %}
+        </div>
+    {% endblock %}
+
+    {% block product_title %}
+        <h3>
+            <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">
+                {{ product.get_title|truncatewords:4 }}
+            </a>
+        </h3>
+    {% endblock %}
+
+    {% block product_rating %}
+        {% if rating %}
+            <p class="star-rating {{ rating.rating|as_stars }}">
+                <i class="icon-star"></i>
+                <i class="icon-star"></i>
+                <i class="icon-star"></i>
+                <i class="icon-star"></i>
+                <i class="icon-star"></i>
+            </p>
+        {% endif %}
+    {% endblock %}
+
+    {% block product_price %}
+        <div class="product_price">
+            {# Mostramos el stock_record completo (mantiene la etiqueta "Disponible") #}
+            {% include "oscar/catalogue/partials/stock_record.html" %}
+            
+            {% if not product.is_parent and not product.has_options %}
+                {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
+            {% endif %}
+        </div>
+    {% endblock %}
+</article>

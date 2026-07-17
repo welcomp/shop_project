@@ -1,0 +1,126 @@
+{% extends "oscar/catalogue/detail.html" %}
+{% load i18n %}
+
+<style>
+    /* Oculta la lista nativa de variantes */
+    .product_pod .variants, #product_gallery ~ .variants {
+        display: none !important;
+    }
+</style>
+
+{# --- RESTAURAMOS EL BLOQUE NATIVO DE STOCK PARA VER LA DISPONIBILIDAD --- #}
+{% block product_stock_record %}
+    {{ block.super }}
+{% endblock %}
+
+{% block product_main %}
+    {# Si es un producto padre, aplicamos CSS para ocultar el precio y la fila de comentarios en la tabla técnica #}
+    {% if product.is_parent %}
+        <style>
+            /* 1. Oculta el precio arriba */
+            .product_main .price_color, 
+            .price_color, 
+            p.price_color {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* 2. Oculta el botón de "Escribir un comentario" de arriba */
+            .product_main a.btn-success,
+            .product_main .btn-group,
+            .product_main a[href*="reviews/add"] {
+                display: none !important;
+            }
+
+            /* 3. Oculta toda la sección de Comentarios de clientes de abajo */
+            #reviews,
+            .product_reviews,
+            section.reviews,
+            div.reviews,
+            h2:has(+ #reviews), 
+            #reviews ~ * {
+                display: none !important;
+            }
+
+            /* 4. Oculta la fila "Número de comentarios" en la tabla técnica de forma robusta */
+            table.table-striped tr:has(th:contains("Número de comentarios")),
+            table.table-striped tr:last-child {
+                display: none !important;
+            }
+        </style>
+    {% endif %}
+
+    {# Heredamos el comportamiento principal de la página de detalle #}
+    {{ block.super }}
+{% endblock %}
+
+
+{# --- HERENCIA INTELIGENTE DE DESCRIPCIÓN (PADRE -> HIJO) --- #}
+{% block product_description %}
+    {% if product.description %}
+        <div id="product_description" class="sub-header">
+            <h2>{% trans "Product Description" %}</h2>
+        </div>
+        <p>{{ product.description|safe }}</p>
+    {% elif product.parent and product.parent.description %}
+        <div id="product_description" class="sub-header">
+            <h2>{% trans "Product Description" %}</h2>
+        </div>
+        <p>{{ product.parent.description|safe }}</p>
+    {% endif %}
+{% endblock %}
+
+
+{# Sección del selector de variantes #}
+{# --- BLOQUE DE INFORMACIÓN DEL PRODUCTO Y VARIANTES --- #}
+{% block product_info %}
+    
+    {# Solo mostramos la tabla de atributos para productos HIJO #}
+    {% if not product.is_parent %}
+        {# Esto renderiza la tabla "Información del producto" (UPC, etc.) #}
+        {{ block.super }}
+    {% endif %}
+    
+    {# Mantenemos el selector de variantes para padres e hijos #}
+    {% if product.is_parent or product.parent %}
+        {% block variants %}
+  <div class="sub-header">  
+            <h2>{% trans 'Variants:' %}</h2>
+  </div> 
+            
+            {# Selector #}
+            <select id="variant-selector" class="form-control" style="max-width: 300px; margin-bottom: 20px;">
+                {% if product.is_parent %}
+                    <option value="" selected disabled>-- Selecciona una dimensión --</option>
+                {% endif %}
+                
+                {% with parent=product.parent|default:product %}
+                    {% for child in parent.children.all %}
+                        {% with dimension=child.attribute_values.first.value %}
+                            <option value="{{ child.get_absolute_url }}" 
+                                    {% if product.id == child.id %}selected{% endif %}>
+                                {{ dimension|default:child.title }}
+                            </option>
+                        {% endwith %}
+                    {% endfor %}
+                {% endwith %}
+            </select>
+
+            <script type="text/javascript">
+                document.getElementById('variant-selector').addEventListener('change', function() {
+                    var url = this.value;
+                    if (url) {
+                        window.location.href = url;
+                    }
+                });
+            </script>
+        {% endblock %}
+    {% else %}
+        {# Este mensaje se mostrará si un producto no tiene variantes ni es una variante #}
+        {# <p>{% trans "No variants available for this product." %}</p> #}
+        {# Comentado para no mostrar nada en ese caso #}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,95 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/oscar/basket/partials/basket_content.html:170
+#: templates/oscar/checkout/thank_you.html:189
+msgid "Continue shopping"
+msgstr "Continuar tus compras"
+
+#: apps/checkout/session.py:150
+msgid "Please either sign in or enter your email address"
+msgstr "Por favor, inicia sesión o ingresa tu dirección de correo electrónico"
+
+#: templates/oscar/catalogue/partials/add_to_wishlist.html:50
+msgid "Please login to add products to a wish list."
+msgstr "Por favor, inicia sesión para añadir productos a la lista de deseos"
+
+#: apps/wishlists/abstract_models.py:23
+msgid "Default"
+msgstr "Lista de deseos"
+
+
+#: templates/oscar/catalogue/partials/add_to_wishlist.html:42
+#, python-format
+msgid ""
+"\n"
+"                    <span class=\"float-left\">Product is in <a href=\"%(url)s\">'%(name)s'</a> wishlist.</span>\n"
+"                "
+msgstr ""
+"\n"
+"                    <span class=\"float-left\">El producto está en la lista de deseos <a href=\"%(url)s\">'%(name)s'</a>.</span>\n"
+"                "
+
+#: templates/oscar/customer/wishlists/wishlists_form.html:33
+msgid "What should your new wish list be called?"
+msgstr "¿Cómo llamaras tu nueva lista de deseos?"
+
+#: apps/wishlists/abstract_models.py:36
+msgid ""
+"Shared - Only the owner and people with access to the obfuscated link can "
+"see the wish list"
+msgstr "Compartida - Visible solo para ti y para quien reciba el enlace privado."
+
+#: templates/oscar/customer/wishlists/wishlists_form.html:38
+#, python-format
+msgid ""
+"\n"
+"                    After your wishlist is created, <strong>%(title)s</strong> will be added.\n"
+"                "
+msgstr "\nDespués de crear la lista de deseos, <strong>%(title)s</strong> será añadido."
+
+
+#: templates/oscar/customer/wishlists/wishlists_form.html:45
+msgid "Share wishlist"
+msgstr "Compartir mi lista de deseos"
+
+#: templates/oscar/customer/wishlists/wishlists_form.html:47
+msgid ""
+"If you want to share your wishlist with others, you can add their email "
+"addresses below. The visibility must be set to shared in order for this to "
+"work."
+msgstr ""
+"Para compartir tu lista con otras personas, ingresa sus correos electrónicos "
+"aquí abajo. <br><br><strong>Importante:</strong> Asegúrate de que la visibilidad de la lista sea "
+"\"Compartida\" para que puedan verla."
+
+#: templates/oscar/catalogue/detail.html:87
+msgid "Variants:"
+msgstr "Variantes / opciones"
+
+#: apps/customer/wishlists/views.py:376
+#, python-format
+msgid "'%(title)s' was removed from your '%(name)s' wish list"
+msgstr "'%(title)s' fue eliminado de tu lista de deseos '%(name)s'"
+
+#: templates/oscar/catalogue/partials/add_to_wishlist.html:17
+#, python-format
+msgid ""
+"\n"
+"                                        Add to '%(name)s' wish list\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        Agregar a la lista de deseos '%(name)s'\n"
+"                                    "
