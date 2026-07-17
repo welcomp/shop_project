@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-0eh2b5+k%!xyn+1mog!-^rv#6o(7h2av^d1)jc8nh8d))z8krw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['feed.welcomp.shop',
+ALLOWED_HOSTS = ['feed.welcomp.net',
                  'feed.ingeniarte.co',
                  'localhost',
                  '127.0.0.1',
