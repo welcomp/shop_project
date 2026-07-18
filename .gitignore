@@ -1,9 +1,11 @@
 # Entorno virtual
 .env/
+.env.*
 
 # Base de datos
 db.sqlite3
 *.sqlite3
+data.json
 
 # Archivos de Python compilados
 __pycache__/

@@ -1,10 +1,17 @@
 import os
 from pathlib import Path
 from oscar.defaults import *
+from decouple import Config, RepositoryEnv, Csv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# --- Lógica de Entorno con Decouple ---
+# Determina qué archivo .env cargar basado en la variable de entorno ENVIRONMENT
+# Si no se especifica, por defecto carga el archivo .env (desarrollo)
+env_file = f".env.{os.environ.get('ENVIRONMENT', 'development')}"
+config = Config(RepositoryEnv(os.path.join(BASE_DIR, env_file)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -13,13 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0eh2b5+k%!xyn+1mog!-^rv#6o(7h2av^d1)jc8nh8d))z8krw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['feed.welcomp.net',
-                 'feed.ingeniarte.co',
-                 'localhost',
-                 '127.0.0.1',
-                 ]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
+
 
 
 # Application definition
@@ -116,6 +120,7 @@ WSGI_APPLICATION = 'welcomp_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -126,6 +131,13 @@ DATABASES = {
         'PORT': '',
         'ATOMIC_REQUESTS': True,
     }
+}
+"""
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
 
 
