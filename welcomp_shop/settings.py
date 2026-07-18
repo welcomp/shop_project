@@ -24,10 +24,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
 
-
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,19 +116,6 @@ WSGI_APPLICATION = 'welcomp_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-        'ATOMIC_REQUESTS': True,
-    }
-}
-"""
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL'),
@@ -178,11 +161,24 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# --- Static and Media Files Configuration ---
 
-# Configuración de archivos de medios (Media)
+# URL para acceder a los archivos estáticos (CSS, JS, etc.)
+STATIC_URL = '/static/'
+
+# Directorio donde `collectstatic` reunirá todos los archivos estáticos para producción.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# URL para acceder a los archivos subidos por los usuarios.
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+
+# Directorio donde se guardarán los archivos subidos por los usuarios.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+# Opcional: Directorios adicionales para buscar archivos estáticos en desarrollo.
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

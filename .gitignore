@@ -13,6 +13,8 @@ __pycache__/
 
 # Archivos de medios subidos por los usuarios
 /media/
+/static/
+staticfiles
 
 # Archivos de índice de búsqueda (Whoosh)
 whoosh_index/
