@@ -15,6 +15,10 @@ __pycache__/
 /media/
 /static/
 staticfiles
+/public/
+/public/static/*
+/public/media/*
+
 
 # Archivos de índice de búsqueda (Whoosh)
 whoosh_index/

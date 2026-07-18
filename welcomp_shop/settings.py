@@ -167,13 +167,14 @@ LOCALE_PATHS = [
 STATIC_URL = '/static/'
 
 # Directorio donde `collectstatic` reunirá todos los archivos estáticos para producción.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
+
 
 # URL para acceder a los archivos subidos por los usuarios.
 MEDIA_URL = '/media/'
 
 # Directorio donde se guardarán los archivos subidos por los usuarios.
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
 
 # Opcional: Directorios adicionales para buscar archivos estáticos en desarrollo.
 # STATICFILES_DIRS = [
