@@ -118,11 +118,10 @@ WSGI_APPLICATION = 'welcomp_shop.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
+        config('DATABASE_URL'), # Pasa la URL directamente como primer argumento
         conn_max_age=600
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
