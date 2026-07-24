@@ -1,9 +1,11 @@
 # Entorno virtual
 .env/
+.env.*
 
 # Base de datos
 db.sqlite3
 *.sqlite3
+data.json
 
 # Archivos de Python compilados
 __pycache__/
@@ -11,6 +13,13 @@ __pycache__/
 
 # Archivos de medios subidos por los usuarios
 /media/
+/static/
+staticfiles
+/public/
+/images/
+/public/static/*
+/public/media/*
+
 
 # Archivos de índice de búsqueda (Whoosh)
 whoosh_index/

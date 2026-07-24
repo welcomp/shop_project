@@ -1,10 +1,17 @@
 import os
 from pathlib import Path
 from oscar.defaults import *
+from decouple import Config, RepositoryEnv, Csv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# --- Lógica de Entorno con Decouple ---
+# Determina qué archivo .env cargar basado en la variable de entorno ENVIRONMENT
+# Si no se especifica, por defecto carga el archivo .env (desarrollo)
+env_file = f".env.{os.environ.get('ENVIRONMENT', 'development')}"
+config = Config(RepositoryEnv(os.path.join(BASE_DIR, env_file)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -13,12 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0eh2b5+k%!xyn+1mog!-^rv#6o(7h2av^d1)jc8nh8d))z8krw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
-
-
-# Application definition
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -113,17 +117,11 @@ WSGI_APPLICATION = 'welcomp_shop.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-        'ATOMIC_REQUESTS': True,
-    }
+    'default': dj_database_url.config(
+        config('DATABASE_URL'), # Pasa la URL directamente como primer argumento
+        conn_max_age=600
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -162,11 +160,25 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# --- Static and Media Files Configuration ---
 
-# Configuración de archivos de medios (Media)
+# URL para acceder a los archivos estáticos (CSS, JS, etc.)
+STATIC_URL = '/static/'
+
+# Directorio donde `collectstatic` reunirá todos los archivos estáticos para producción.
+STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
+
+
+# URL para acceder a los archivos subidos por los usuarios.
 MEDIA_URL = '/media/'
+
+# Directorio donde se guardarán los archivos subidos por los usuarios.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+
+# Opcional: Directorios adicionales para buscar archivos estáticos en desarrollo.
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
