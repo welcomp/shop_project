@@ -116,12 +116,38 @@ WSGI_APPLICATION = 'welcomp_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        config('DATABASE_URL'), # Pasa la URL directamente como primer argumento
-        conn_max_age=600
-    )
-}
+if DEBUG:
+    # --- Base de datos para Desarrollo ---
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db_dev.sqlite3',
+        }
+    }
+else:
+    # --- Base de datos para Producción ---
+    # Primero, intenta obtener la URL de la base de datos desde las variables de entorno.
+    # Si no existe, 'database_url' será None.
+    database_url = config('DATABASE_URL', default=None)
+
+    if database_url:
+        # Si se encontró DATABASE_URL, configura PostgreSQL.
+        DATABASES = {
+            'default': dj_database_url.config(
+                conn_max_age=600,
+                ssl_require=config('DB_SSL_REQUIRE', default=True, cast=bool)
+            )
+        }
+    else:
+        # Si no se encontró DATABASE_URL, usa una base de datos SQLite para producción.
+        # Útil para pruebas o despliegues simples.
+        print("ADVERTENCIA: No se encontró DATABASE_URL. Usando SQLite como fallback en producción.")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.prod.sqlite3',
+            }
+        }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
